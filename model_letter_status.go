@@ -20,14 +20,14 @@ type LetterStatus string
 
 // List of LetterStatus
 const (
-	FORMING LetterStatus = "forming"
-	AWAITING_PAYMENT LetterStatus = "awaiting_payment"
-	PAID LetterStatus = "paid"
-	SENDING LetterStatus = "sending"
-	SENT LetterStatus = "sent"
-	PARTIAL_FAILURE LetterStatus = "partial_failure"
-	ERROR LetterStatus = "error"
-	CANCELLED LetterStatus = "cancelled"
+	LETTERSTATUS_FORMING LetterStatus = "forming"
+	LETTERSTATUS_AWAITING_PAYMENT LetterStatus = "awaiting_payment"
+	LETTERSTATUS_PAID LetterStatus = "paid"
+	LETTERSTATUS_SENDING LetterStatus = "sending"
+	LETTERSTATUS_SENT LetterStatus = "sent"
+	LETTERSTATUS_PARTIAL_FAILURE LetterStatus = "partial_failure"
+	LETTERSTATUS_ERROR LetterStatus = "error"
+	LETTERSTATUS_CANCELLED LetterStatus = "cancelled"
 )
 
 // All allowed values of LetterStatus enum

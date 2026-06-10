@@ -20,7 +20,7 @@ type LetterClass string
 
 // List of LetterClass
 const (
-	REGISTERED LetterClass = "registered"
+	LETTERCLASS_REGISTERED LetterClass = "registered"
 )
 
 // All allowed values of LetterClass enum

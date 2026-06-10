@@ -20,8 +20,8 @@ type PartyType string
 
 // List of PartyType
 const (
-	INDIVIDUAL PartyType = "individual"
-	ORGANIZATION PartyType = "organization"
+	PARTYTYPE_INDIVIDUAL PartyType = "individual"
+	PARTYTYPE_ORGANIZATION PartyType = "organization"
 )
 
 // All allowed values of PartyType enum

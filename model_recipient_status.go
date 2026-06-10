@@ -20,12 +20,12 @@ type RecipientStatus string
 
 // List of RecipientStatus
 const (
-	PENDING RecipientStatus = "pending"
-	QUEUED RecipientStatus = "queued"
-	SENDING RecipientStatus = "sending"
-	SENT RecipientStatus = "sent"
-	DELIVERED RecipientStatus = "delivered"
-	FAILED RecipientStatus = "failed"
+	RECIPIENTSTATUS_PENDING RecipientStatus = "pending"
+	RECIPIENTSTATUS_QUEUED RecipientStatus = "queued"
+	RECIPIENTSTATUS_SENDING RecipientStatus = "sending"
+	RECIPIENTSTATUS_SENT RecipientStatus = "sent"
+	RECIPIENTSTATUS_DELIVERED RecipientStatus = "delivered"
+	RECIPIENTSTATUS_FAILED RecipientStatus = "failed"
 )
 
 // All allowed values of RecipientStatus enum

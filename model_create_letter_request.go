@@ -46,7 +46,7 @@ func NewCreateLetterRequest(recipients []RecipientInput, content LetterContent) 
 	this := CreateLetterRequest{}
 	this.Recipients = recipients
 	this.Content = content
-	var letterClass LetterClass = REGISTERED
+	var letterClass LetterClass = LETTERCLASS_REGISTERED
 	this.LetterClass = &letterClass
 	var onPromoInvalid string = "ignore"
 	this.OnPromoInvalid = &onPromoInvalid
@@ -60,7 +60,7 @@ func NewCreateLetterRequest(recipients []RecipientInput, content LetterContent) 
 // but it doesn't guarantee that properties required by API are set
 func NewCreateLetterRequestWithDefaults() *CreateLetterRequest {
 	this := CreateLetterRequest{}
-	var letterClass LetterClass = REGISTERED
+	var letterClass LetterClass = LETTERCLASS_REGISTERED
 	this.LetterClass = &letterClass
 	var onPromoInvalid string = "ignore"
 	this.OnPromoInvalid = &onPromoInvalid
