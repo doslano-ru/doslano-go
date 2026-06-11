@@ -42,7 +42,7 @@ func (r ApiCreateLetterRequest) IdempotencyKey(idempotencyKey string) ApiCreateL
 	return r
 }
 
-func (r ApiCreateLetterRequest) Execute() (*Letter, *http.Response, error) {
+func (r ApiCreateLetterRequest) Execute() (*DryRunResult, *http.Response, error) {
 	return r.ApiService.CreateLetterExecute(r)
 }
 
@@ -66,13 +66,13 @@ func (a *LettersAPIService) CreateLetter(ctx context.Context) ApiCreateLetterReq
 }
 
 // Execute executes the request
-//  @return Letter
-func (a *LettersAPIService) CreateLetterExecute(r ApiCreateLetterRequest) (*Letter, *http.Response, error) {
+//  @return DryRunResult
+func (a *LettersAPIService) CreateLetterExecute(r ApiCreateLetterRequest) (*DryRunResult, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *Letter
+		localVarReturnValue  *DryRunResult
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "LettersAPIService.CreateLetter")

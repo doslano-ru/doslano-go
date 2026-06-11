@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## CreateLetter
 
-> Letter CreateLetter(ctx).CreateLetterRequest(createLetterRequest).IdempotencyKey(idempotencyKey).Execute()
+> DryRunResult CreateLetter(ctx).CreateLetterRequest(createLetterRequest).IdempotencyKey(idempotencyKey).Execute()
 
 Отправить письмо
 
@@ -42,7 +42,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `LettersAPI.CreateLetter``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateLetter`: Letter
+	// response from `CreateLetter`: DryRunResult
 	fmt.Fprintf(os.Stdout, "Response from `LettersAPI.CreateLetter`: %v\n", resp)
 }
 ```
@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Letter**](Letter.md)
+[**DryRunResult**](DryRunResult.md)
 
 ### Authorization
 

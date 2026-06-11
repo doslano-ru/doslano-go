@@ -32,6 +32,8 @@ type CreateLetterRequest struct {
 	OnPromoInvalid *string `json:"on_promo_invalid,omitempty"`
 	// Что делать при нехватке средств: `reject` — отклонить (402), письмо не создаётся; `hold` — создать письмо в статусе `awaiting_payment`, оно оплатится автоматически при пополнении баланса. 
 	OnInsufficientFunds *string `json:"on_insufficient_funds,omitempty"`
+	// Пробный прогон: запрос проходит ПОЛНУЮ реальную валидацию (ключ, scope, IP, файлы, адреса получателей, промокод) и возвращает расчёт цены — но письмо в итоге не создаётся и средства не списываются. Ответ — `200` со схемой `DryRunResult` (вместо `201`/`Letter`). Ошибки валидации возвращаются теми же кодами, что и при реальной отправке (400/422) — это честный тест интеграции. `Idempotency-Key` при `dry_run` игнорируется; `callback_url` не регистрируется; баланс НЕ проверяется (тестируйте хоть с нулевым балансом — сумма к списанию будет в `pricing.total_minor`). 
+	DryRun *bool `json:"dry_run,omitempty"`
 	// HTTPS-URL для колбеков по этому письму. Если не указан — используйте поллинг.
 	CallbackUrl *string `json:"callback_url,omitempty"`
 }
@@ -52,6 +54,8 @@ func NewCreateLetterRequest(recipients []RecipientInput, content LetterContent) 
 	this.OnPromoInvalid = &onPromoInvalid
 	var onInsufficientFunds string = "reject"
 	this.OnInsufficientFunds = &onInsufficientFunds
+	var dryRun bool = false
+	this.DryRun = &dryRun
 	return &this
 }
 
@@ -66,6 +70,8 @@ func NewCreateLetterRequestWithDefaults() *CreateLetterRequest {
 	this.OnPromoInvalid = &onPromoInvalid
 	var onInsufficientFunds string = "reject"
 	this.OnInsufficientFunds = &onInsufficientFunds
+	var dryRun bool = false
+	this.DryRun = &dryRun
 	return &this
 }
 
@@ -277,6 +283,38 @@ func (o *CreateLetterRequest) SetOnInsufficientFunds(v string) {
 	o.OnInsufficientFunds = &v
 }
 
+// GetDryRun returns the DryRun field value if set, zero value otherwise.
+func (o *CreateLetterRequest) GetDryRun() bool {
+	if o == nil || IsNil(o.DryRun) {
+		var ret bool
+		return ret
+	}
+	return *o.DryRun
+}
+
+// GetDryRunOk returns a tuple with the DryRun field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateLetterRequest) GetDryRunOk() (*bool, bool) {
+	if o == nil || IsNil(o.DryRun) {
+		return nil, false
+	}
+	return o.DryRun, true
+}
+
+// HasDryRun returns a boolean if a field has been set.
+func (o *CreateLetterRequest) HasDryRun() bool {
+	if o != nil && !IsNil(o.DryRun) {
+		return true
+	}
+
+	return false
+}
+
+// SetDryRun gets a reference to the given bool and assigns it to the DryRun field.
+func (o *CreateLetterRequest) SetDryRun(v bool) {
+	o.DryRun = &v
+}
+
 // GetCallbackUrl returns the CallbackUrl field value if set, zero value otherwise.
 func (o *CreateLetterRequest) GetCallbackUrl() string {
 	if o == nil || IsNil(o.CallbackUrl) {
@@ -335,6 +373,9 @@ func (o CreateLetterRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.OnInsufficientFunds) {
 		toSerialize["on_insufficient_funds"] = o.OnInsufficientFunds
+	}
+	if !IsNil(o.DryRun) {
+		toSerialize["dry_run"] = o.DryRun
 	}
 	if !IsNil(o.CallbackUrl) {
 		toSerialize["callback_url"] = o.CallbackUrl

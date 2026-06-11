@@ -12,6 +12,8 @@ docs/Balance.md
 docs/BalanceAPI.md
 docs/CreateLetterRequest.md
 docs/DefaultAPI.md
+docs/DryRunResult.md
+docs/DryRunResultPricing.md
 docs/FileSource.md
 docs/Letter.md
 docs/LetterClass.md
@@ -38,6 +40,8 @@ go.mod
 go.sum
 model_balance.go
 model_create_letter_request.go
+model_dry_run_result.go
+model_dry_run_result_pricing.go
 model_file_source.go
 model_letter.go
 model_letter_class.go
