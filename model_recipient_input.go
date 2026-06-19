@@ -26,7 +26,8 @@ type RecipientInput struct {
 	// Адрес получателя (строкой; нормализуется на нашей стороне). Можно опустить при resolve_address_by_inn=true.
 	Address *string `json:"address,omitempty"`
 	PartyType *PartyType `json:"party_type,omitempty"`
-	Inn *string `json:"inn,omitempty" validate:"regexp=^[0-9]{10,12}$"`
+	// ИНН (10 цифр).
+	Inn *string `json:"inn,omitempty" validate:"regexp=^[0-9]{10}$"`
 	// Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type=organization с заданным inn: адрес и наименование берутся из реестра (DaData findById/party, головная организация), address можно не передавать. Если резолв не удался и address не передан — 422 recipient_address_unresolved; флаг без inn или не для organization — 422 recipient_resolve_requires_inn. Если передан и address — он fallback при неудаче резолва.
 	ResolveAddressByInn *bool `json:"resolve_address_by_inn,omitempty"`
 }
