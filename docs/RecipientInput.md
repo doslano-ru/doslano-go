@@ -4,16 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** | ФИО или название получателя. | 
-**Address** | **string** | Адрес получателя (строкой; нормализуется на нашей стороне). | 
+**Name** | **string** | ФИО или название получателя. При resolve_address_by_inn&#x3D;true ПЕРЕЗАПИСЫВАЕТСЯ наименованием из ЕГРЮЛ. | 
+**Address** | Pointer to **string** | Адрес получателя (строкой; нормализуется на нашей стороне). Можно опустить при resolve_address_by_inn&#x3D;true. | [optional] 
 **PartyType** | Pointer to [**PartyType**](PartyType.md) |  | [optional] 
 **Inn** | Pointer to **string** |  | [optional] 
+**ResolveAddressByInn** | Pointer to **bool** | Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type&#x3D;organization с заданным inn: адрес и наименование берутся из реестра (DaData findById/party, головная организация), address можно не передавать. Если резолв не удался и address не передан — 422 recipient_address_unresolved; флаг без inn или не для organization — 422 recipient_resolve_requires_inn. Если передан и address — он fallback при неудаче резолва. | [optional] [default to false]
 
 ## Methods
 
 ### NewRecipientInput
 
-`func NewRecipientInput(name string, address string, ) *RecipientInput`
+`func NewRecipientInput(name string, ) *RecipientInput`
 
 NewRecipientInput instantiates a new RecipientInput object
 This constructor will assign default values to properties that have it defined,
@@ -67,6 +68,11 @@ and a boolean to check if the value has been set.
 
 SetAddress sets Address field to given value.
 
+### HasAddress
+
+`func (o *RecipientInput) HasAddress() bool`
+
+HasAddress returns a boolean if a field has been set.
 
 ### GetPartyType
 
@@ -117,6 +123,31 @@ SetInn sets Inn field to given value.
 `func (o *RecipientInput) HasInn() bool`
 
 HasInn returns a boolean if a field has been set.
+
+### GetResolveAddressByInn
+
+`func (o *RecipientInput) GetResolveAddressByInn() bool`
+
+GetResolveAddressByInn returns the ResolveAddressByInn field if non-nil, zero value otherwise.
+
+### GetResolveAddressByInnOk
+
+`func (o *RecipientInput) GetResolveAddressByInnOk() (*bool, bool)`
+
+GetResolveAddressByInnOk returns a tuple with the ResolveAddressByInn field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetResolveAddressByInn
+
+`func (o *RecipientInput) SetResolveAddressByInn(v bool)`
+
+SetResolveAddressByInn sets ResolveAddressByInn field to given value.
+
+### HasResolveAddressByInn
+
+`func (o *RecipientInput) HasResolveAddressByInn() bool`
+
+HasResolveAddressByInn returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -32,7 +32,7 @@ import (
 )
 
 func main() {
-	createLetterRequest := *openapiclient.NewCreateLetterRequest([]openapiclient.RecipientInput{*openapiclient.NewRecipientInput("Name_example", "Address_example")}, *openapiclient.NewLetterContent(*openapiclient.NewFileSource())) // CreateLetterRequest | 
+	createLetterRequest := *openapiclient.NewCreateLetterRequest([]openapiclient.RecipientInput{*openapiclient.NewRecipientInput("Name_example")}, *openapiclient.NewLetterContent(*openapiclient.NewFileSource())) // CreateLetterRequest | 
 	idempotencyKey := "idempotencyKey_example" // string | Ключ идемпотентности. Повтор с тем же ключом в течение TTL вернёт исходный результат, не создавая письмо повторно. (optional)
 
 	configuration := openapiclient.NewConfiguration()

@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **ShipmentNumber** | Pointer to **string** |  | [optional] 
 **TrackingNumber** | Pointer to **string** |  | [optional] 
 **Error** | Pointer to **string** |  | [optional] 
+**AmountMinor** | Pointer to **int32** | Фактически списанная стоимость отправления ЭТОМУ получателю, в копейках (доля дисконтированного тотала письма с учётом промокода). Присутствует только в &#x60;recipient.sent&#x60; — отправление реально ушло и оплачено. В &#x60;recipient.failed&#x60; отсутствует: при провале сумма возвращается на баланс. | [optional] 
 
 ## Methods
 
@@ -169,6 +170,31 @@ SetError sets Error field to given value.
 `func (o *WebhookEventData) HasError() bool`
 
 HasError returns a boolean if a field has been set.
+
+### GetAmountMinor
+
+`func (o *WebhookEventData) GetAmountMinor() int32`
+
+GetAmountMinor returns the AmountMinor field if non-nil, zero value otherwise.
+
+### GetAmountMinorOk
+
+`func (o *WebhookEventData) GetAmountMinorOk() (*int32, bool)`
+
+GetAmountMinorOk returns a tuple with the AmountMinor field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAmountMinor
+
+`func (o *WebhookEventData) SetAmountMinor(v int32)`
+
+SetAmountMinor sets AmountMinor field to given value.
+
+### HasAmountMinor
+
+`func (o *WebhookEventData) HasAmountMinor() bool`
+
+HasAmountMinor returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

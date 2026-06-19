@@ -28,7 +28,7 @@ type SenderInput struct {
 	Email *string `json:"email,omitempty"`
 	PartyType *PartyType `json:"party_type,omitempty"`
 	// ИНН (для юр. лиц/ИП).
-	Inn *string `json:"inn,omitempty"`
+	Inn *string `json:"inn,omitempty" validate:"regexp=^[0-9]{10,12}$"`
 }
 
 type _SenderInput SenderInput

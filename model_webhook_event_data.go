@@ -27,6 +27,8 @@ type WebhookEventData struct {
 	ShipmentNumber *string `json:"shipment_number,omitempty"`
 	TrackingNumber *string `json:"tracking_number,omitempty"`
 	Error *string `json:"error,omitempty"`
+	// Фактически списанная стоимость отправления ЭТОМУ получателю, в копейках (доля дисконтированного тотала письма с учётом промокода). Присутствует только в `recipient.sent` — отправление реально ушло и оплачено. В `recipient.failed` отсутствует: при провале сумма возвращается на баланс.
+	AmountMinor *int32 `json:"amount_minor,omitempty"`
 }
 
 type _WebhookEventData WebhookEventData
@@ -226,6 +228,38 @@ func (o *WebhookEventData) SetError(v string) {
 	o.Error = &v
 }
 
+// GetAmountMinor returns the AmountMinor field value if set, zero value otherwise.
+func (o *WebhookEventData) GetAmountMinor() int32 {
+	if o == nil || IsNil(o.AmountMinor) {
+		var ret int32
+		return ret
+	}
+	return *o.AmountMinor
+}
+
+// GetAmountMinorOk returns a tuple with the AmountMinor field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WebhookEventData) GetAmountMinorOk() (*int32, bool) {
+	if o == nil || IsNil(o.AmountMinor) {
+		return nil, false
+	}
+	return o.AmountMinor, true
+}
+
+// HasAmountMinor returns a boolean if a field has been set.
+func (o *WebhookEventData) HasAmountMinor() bool {
+	if o != nil && !IsNil(o.AmountMinor) {
+		return true
+	}
+
+	return false
+}
+
+// SetAmountMinor gets a reference to the given int32 and assigns it to the AmountMinor field.
+func (o *WebhookEventData) SetAmountMinor(v int32) {
+	o.AmountMinor = &v
+}
+
 func (o WebhookEventData) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -249,6 +283,9 @@ func (o WebhookEventData) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Error) {
 		toSerialize["error"] = o.Error
+	}
+	if !IsNil(o.AmountMinor) {
+		toSerialize["amount_minor"] = o.AmountMinor
 	}
 	return toSerialize, nil
 }

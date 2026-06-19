@@ -23,7 +23,7 @@ type Problem struct {
 	Title *string `json:"title,omitempty"`
 	Status *int32 `json:"status,omitempty"`
 	Detail *string `json:"detail,omitempty"`
-	// Машиночитаемый код ошибки (напр. `insufficient_funds`, `validation_failed`, `forbidden_scope`).
+	// Машиночитаемый код ошибки (напр. `insufficient_funds`, `validation_failed`, `address_validation_failed`, `forbidden_scope`).
 	Code *string `json:"code,omitempty"`
 }
 

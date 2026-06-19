@@ -21,12 +21,14 @@ var _ MappedNullable = &RecipientInput{}
 
 // RecipientInput struct for RecipientInput
 type RecipientInput struct {
-	// ФИО или название получателя.
+	// ФИО или название получателя. При resolve_address_by_inn=true ПЕРЕЗАПИСЫВАЕТСЯ наименованием из ЕГРЮЛ.
 	Name string `json:"name"`
-	// Адрес получателя (строкой; нормализуется на нашей стороне).
-	Address string `json:"address"`
+	// Адрес получателя (строкой; нормализуется на нашей стороне). Можно опустить при resolve_address_by_inn=true.
+	Address *string `json:"address,omitempty"`
 	PartyType *PartyType `json:"party_type,omitempty"`
-	Inn *string `json:"inn,omitempty"`
+	Inn *string `json:"inn,omitempty" validate:"regexp=^[0-9]{10,12}$"`
+	// Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type=organization с заданным inn: адрес и наименование берутся из реестра (DaData findById/party, головная организация), address можно не передавать. Если резолв не удался и address не передан — 422 recipient_address_unresolved; флаг без inn или не для organization — 422 recipient_resolve_requires_inn. Если передан и address — он fallback при неудаче резолва.
+	ResolveAddressByInn *bool `json:"resolve_address_by_inn,omitempty"`
 }
 
 type _RecipientInput RecipientInput
@@ -35,10 +37,11 @@ type _RecipientInput RecipientInput
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRecipientInput(name string, address string) *RecipientInput {
+func NewRecipientInput(name string) *RecipientInput {
 	this := RecipientInput{}
 	this.Name = name
-	this.Address = address
+	var resolveAddressByInn bool = false
+	this.ResolveAddressByInn = &resolveAddressByInn
 	return &this
 }
 
@@ -47,6 +50,8 @@ func NewRecipientInput(name string, address string) *RecipientInput {
 // but it doesn't guarantee that properties required by API are set
 func NewRecipientInputWithDefaults() *RecipientInput {
 	this := RecipientInput{}
+	var resolveAddressByInn bool = false
+	this.ResolveAddressByInn = &resolveAddressByInn
 	return &this
 }
 
@@ -74,28 +79,36 @@ func (o *RecipientInput) SetName(v string) {
 	o.Name = v
 }
 
-// GetAddress returns the Address field value
+// GetAddress returns the Address field value if set, zero value otherwise.
 func (o *RecipientInput) GetAddress() string {
-	if o == nil {
+	if o == nil || IsNil(o.Address) {
 		var ret string
 		return ret
 	}
-
-	return o.Address
+	return *o.Address
 }
 
-// GetAddressOk returns a tuple with the Address field value
+// GetAddressOk returns a tuple with the Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RecipientInput) GetAddressOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Address) {
 		return nil, false
 	}
-	return &o.Address, true
+	return o.Address, true
 }
 
-// SetAddress sets field value
+// HasAddress returns a boolean if a field has been set.
+func (o *RecipientInput) HasAddress() bool {
+	if o != nil && !IsNil(o.Address) {
+		return true
+	}
+
+	return false
+}
+
+// SetAddress gets a reference to the given string and assigns it to the Address field.
 func (o *RecipientInput) SetAddress(v string) {
-	o.Address = v
+	o.Address = &v
 }
 
 // GetPartyType returns the PartyType field value if set, zero value otherwise.
@@ -162,6 +175,38 @@ func (o *RecipientInput) SetInn(v string) {
 	o.Inn = &v
 }
 
+// GetResolveAddressByInn returns the ResolveAddressByInn field value if set, zero value otherwise.
+func (o *RecipientInput) GetResolveAddressByInn() bool {
+	if o == nil || IsNil(o.ResolveAddressByInn) {
+		var ret bool
+		return ret
+	}
+	return *o.ResolveAddressByInn
+}
+
+// GetResolveAddressByInnOk returns a tuple with the ResolveAddressByInn field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RecipientInput) GetResolveAddressByInnOk() (*bool, bool) {
+	if o == nil || IsNil(o.ResolveAddressByInn) {
+		return nil, false
+	}
+	return o.ResolveAddressByInn, true
+}
+
+// HasResolveAddressByInn returns a boolean if a field has been set.
+func (o *RecipientInput) HasResolveAddressByInn() bool {
+	if o != nil && !IsNil(o.ResolveAddressByInn) {
+		return true
+	}
+
+	return false
+}
+
+// SetResolveAddressByInn gets a reference to the given bool and assigns it to the ResolveAddressByInn field.
+func (o *RecipientInput) SetResolveAddressByInn(v bool) {
+	o.ResolveAddressByInn = &v
+}
+
 func (o RecipientInput) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -173,12 +218,17 @@ func (o RecipientInput) MarshalJSON() ([]byte, error) {
 func (o RecipientInput) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
-	toSerialize["address"] = o.Address
+	if !IsNil(o.Address) {
+		toSerialize["address"] = o.Address
+	}
 	if !IsNil(o.PartyType) {
 		toSerialize["party_type"] = o.PartyType
 	}
 	if !IsNil(o.Inn) {
 		toSerialize["inn"] = o.Inn
+	}
+	if !IsNil(o.ResolveAddressByInn) {
+		toSerialize["resolve_address_by_inn"] = o.ResolveAddressByInn
 	}
 	return toSerialize, nil
 }
@@ -189,7 +239,6 @@ func (o *RecipientInput) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"name",
-		"address",
 	}
 
 	allProperties := make(map[string]interface{})
