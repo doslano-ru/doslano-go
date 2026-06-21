@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **Address** | Pointer to **string** | Адрес получателя (строкой; нормализуется на нашей стороне). Можно опустить при resolve_address_by_inn&#x3D;true. | [optional] 
 **PartyType** | Pointer to [**PartyType**](PartyType.md) |  | [optional] 
 **Inn** | Pointer to **string** | ИНН (10 цифр). | [optional] 
+**Email** | Pointer to **string** | Email получателя для уведомления-копии (опционально). После отправки письма получателю на этот адрес приходит письмо со ссылкой на электронную версию (страница /receive). Пустой/опущен — уведомление не шлётся; адрес указывает отправитель и отвечает за корректность. | [optional] 
 **ResolveAddressByInn** | Pointer to **bool** | Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type&#x3D;organization с заданным inn: адрес и наименование берутся из реестра (DaData findById/party, головная организация), address можно не передавать. Если резолв не удался и address не передан — 422 recipient_address_unresolved; флаг без inn или не для organization — 422 recipient_resolve_requires_inn. Если передан и address — он fallback при неудаче резолва. | [optional] [default to false]
 
 ## Methods
@@ -123,6 +124,31 @@ SetInn sets Inn field to given value.
 `func (o *RecipientInput) HasInn() bool`
 
 HasInn returns a boolean if a field has been set.
+
+### GetEmail
+
+`func (o *RecipientInput) GetEmail() string`
+
+GetEmail returns the Email field if non-nil, zero value otherwise.
+
+### GetEmailOk
+
+`func (o *RecipientInput) GetEmailOk() (*string, bool)`
+
+GetEmailOk returns a tuple with the Email field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEmail
+
+`func (o *RecipientInput) SetEmail(v string)`
+
+SetEmail sets Email field to given value.
+
+### HasEmail
+
+`func (o *RecipientInput) HasEmail() bool`
+
+HasEmail returns a boolean if a field has been set.
 
 ### GetResolveAddressByInn
 

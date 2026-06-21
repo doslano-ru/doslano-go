@@ -28,6 +28,8 @@ type RecipientInput struct {
 	PartyType *PartyType `json:"party_type,omitempty"`
 	// ИНН (10 цифр).
 	Inn *string `json:"inn,omitempty" validate:"regexp=^[0-9]{10}$"`
+	// Email получателя для уведомления-копии (опционально). После отправки письма получателю на этот адрес приходит письмо со ссылкой на электронную версию (страница /receive). Пустой/опущен — уведомление не шлётся; адрес указывает отправитель и отвечает за корректность.
+	Email *string `json:"email,omitempty"`
 	// Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type=organization с заданным inn: адрес и наименование берутся из реестра (DaData findById/party, головная организация), address можно не передавать. Если резолв не удался и address не передан — 422 recipient_address_unresolved; флаг без inn или не для organization — 422 recipient_resolve_requires_inn. Если передан и address — он fallback при неудаче резолва.
 	ResolveAddressByInn *bool `json:"resolve_address_by_inn,omitempty"`
 }
@@ -176,6 +178,38 @@ func (o *RecipientInput) SetInn(v string) {
 	o.Inn = &v
 }
 
+// GetEmail returns the Email field value if set, zero value otherwise.
+func (o *RecipientInput) GetEmail() string {
+	if o == nil || IsNil(o.Email) {
+		var ret string
+		return ret
+	}
+	return *o.Email
+}
+
+// GetEmailOk returns a tuple with the Email field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RecipientInput) GetEmailOk() (*string, bool) {
+	if o == nil || IsNil(o.Email) {
+		return nil, false
+	}
+	return o.Email, true
+}
+
+// HasEmail returns a boolean if a field has been set.
+func (o *RecipientInput) HasEmail() bool {
+	if o != nil && !IsNil(o.Email) {
+		return true
+	}
+
+	return false
+}
+
+// SetEmail gets a reference to the given string and assigns it to the Email field.
+func (o *RecipientInput) SetEmail(v string) {
+	o.Email = &v
+}
+
 // GetResolveAddressByInn returns the ResolveAddressByInn field value if set, zero value otherwise.
 func (o *RecipientInput) GetResolveAddressByInn() bool {
 	if o == nil || IsNil(o.ResolveAddressByInn) {
@@ -227,6 +261,9 @@ func (o RecipientInput) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Inn) {
 		toSerialize["inn"] = o.Inn
+	}
+	if !IsNil(o.Email) {
+		toSerialize["email"] = o.Email
 	}
 	if !IsNil(o.ResolveAddressByInn) {
 		toSerialize["resolve_address_by_inn"] = o.ResolveAddressByInn
