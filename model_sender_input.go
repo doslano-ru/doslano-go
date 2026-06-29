@@ -12,35 +12,30 @@ package doslano
 
 import (
 	"encoding/json"
-	"bytes"
-	"fmt"
 )
 
 // checks if the SenderInput type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &SenderInput{}
 
-// SenderInput struct for SenderInput
+// SenderInput Отправитель. Любое поле можно опустить — оно берётся из профиля аккаунта (ЛК). Например, передайте только `email`, чтобы переопределить почту плательщика для кассового чека, а имя/адрес оставить из профиля. Если `sender` не передан целиком — весь отправитель берётся из профиля.
 type SenderInput struct {
-	// ФИО или название отправителя.
-	Name string `json:"name"`
-	// Адрес отправителя (строкой; нормализуется на нашей стороне).
-	Address string `json:"address"`
+	// ФИО или название отправителя. Не указано — из профиля ЛК.
+	Name *string `json:"name,omitempty"`
+	// Адрес отправителя (строкой; нормализуется). Не указан — из профиля ЛК.
+	Address *string `json:"address,omitempty"`
+	// Email отправителя (плательщика) для кассового чека. Не указан — из профиля ЛК.
 	Email *string `json:"email,omitempty"`
 	PartyType *PartyType `json:"party_type,omitempty"`
-	// ИНН (для юр. лиц/ИП).
+	// ИНН (для юр. лиц/ИП). Не указан — из профиля ЛК.
 	Inn *string `json:"inn,omitempty" validate:"regexp=^[0-9]{10,12}$"`
 }
-
-type _SenderInput SenderInput
 
 // NewSenderInput instantiates a new SenderInput object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSenderInput(name string, address string) *SenderInput {
+func NewSenderInput() *SenderInput {
 	this := SenderInput{}
-	this.Name = name
-	this.Address = address
 	return &this
 }
 
@@ -52,52 +47,68 @@ func NewSenderInputWithDefaults() *SenderInput {
 	return &this
 }
 
-// GetName returns the Name field value
+// GetName returns the Name field value if set, zero value otherwise.
 func (o *SenderInput) GetName() string {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
-
-	return o.Name
+	return *o.Name
 }
 
-// GetNameOk returns a tuple with the Name field value
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SenderInput) GetNameOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
-	return &o.Name, true
+	return o.Name, true
 }
 
-// SetName sets field value
+// HasName returns a boolean if a field has been set.
+func (o *SenderInput) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
 func (o *SenderInput) SetName(v string) {
-	o.Name = v
+	o.Name = &v
 }
 
-// GetAddress returns the Address field value
+// GetAddress returns the Address field value if set, zero value otherwise.
 func (o *SenderInput) GetAddress() string {
-	if o == nil {
+	if o == nil || IsNil(o.Address) {
 		var ret string
 		return ret
 	}
-
-	return o.Address
+	return *o.Address
 }
 
-// GetAddressOk returns a tuple with the Address field value
+// GetAddressOk returns a tuple with the Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SenderInput) GetAddressOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Address) {
 		return nil, false
 	}
-	return &o.Address, true
+	return o.Address, true
 }
 
-// SetAddress sets field value
+// HasAddress returns a boolean if a field has been set.
+func (o *SenderInput) HasAddress() bool {
+	if o != nil && !IsNil(o.Address) {
+		return true
+	}
+
+	return false
+}
+
+// SetAddress gets a reference to the given string and assigns it to the Address field.
 func (o *SenderInput) SetAddress(v string) {
-	o.Address = v
+	o.Address = &v
 }
 
 // GetEmail returns the Email field value if set, zero value otherwise.
@@ -206,8 +217,12 @@ func (o SenderInput) MarshalJSON() ([]byte, error) {
 
 func (o SenderInput) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["name"] = o.Name
-	toSerialize["address"] = o.Address
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.Address) {
+		toSerialize["address"] = o.Address
+	}
 	if !IsNil(o.Email) {
 		toSerialize["email"] = o.Email
 	}
@@ -218,44 +233,6 @@ func (o SenderInput) ToMap() (map[string]interface{}, error) {
 		toSerialize["inn"] = o.Inn
 	}
 	return toSerialize, nil
-}
-
-func (o *SenderInput) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"name",
-		"address",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err;
-	}
-
-	for _, requiredProperty := range(requiredProperties) {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
-	varSenderInput := _SenderInput{}
-
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSenderInput)
-
-	if err != nil {
-		return err
-	}
-
-	*o = SenderInput(varSenderInput)
-
-	return err
 }
 
 type NullableSenderInput struct {

@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** | ФИО или название отправителя. | 
-**Address** | **string** | Адрес отправителя (строкой; нормализуется на нашей стороне). | 
-**Email** | Pointer to **string** |  | [optional] 
+**Name** | Pointer to **string** | ФИО или название отправителя. Не указано — из профиля ЛК. | [optional] 
+**Address** | Pointer to **string** | Адрес отправителя (строкой; нормализуется). Не указан — из профиля ЛК. | [optional] 
+**Email** | Pointer to **string** | Email отправителя (плательщика) для кассового чека. Не указан — из профиля ЛК. | [optional] 
 **PartyType** | Pointer to [**PartyType**](PartyType.md) |  | [optional] 
-**Inn** | Pointer to **string** | ИНН (для юр. лиц/ИП). | [optional] 
+**Inn** | Pointer to **string** | ИНН (для юр. лиц/ИП). Не указан — из профиля ЛК. | [optional] 
 
 ## Methods
 
 ### NewSenderInput
 
-`func NewSenderInput(name string, address string, ) *SenderInput`
+`func NewSenderInput() *SenderInput`
 
 NewSenderInput instantiates a new SenderInput object
 This constructor will assign default values to properties that have it defined,
@@ -48,6 +48,11 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+### HasName
+
+`func (o *SenderInput) HasName() bool`
+
+HasName returns a boolean if a field has been set.
 
 ### GetAddress
 
@@ -68,6 +73,11 @@ and a boolean to check if the value has been set.
 
 SetAddress sets Address field to given value.
 
+### HasAddress
+
+`func (o *SenderInput) HasAddress() bool`
+
+HasAddress returns a boolean if a field has been set.
 
 ### GetEmail
 
