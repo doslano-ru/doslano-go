@@ -29,6 +29,12 @@ type WebhookEventData struct {
 	Error *string `json:"error,omitempty"`
 	// Фактически списанная стоимость отправления ЭТОМУ получателю, в копейках (доля дисконтированного тотала письма с учётом промокода). Присутствует только в `recipient.sent` — отправление реально ушло и оплачено. В `recipient.failed` отсутствует: при провале сумма возвращается на баланс.
 	AmountMinor *int32 `json:"amount_minor,omitempty"`
+	// Ссылка на скачивание PDF фискального чека (54-ФЗ) через наш API. Колбэк `recipient.sent` уходит ПОСЛЕ готовности чека, поэтому поле в нём присутствует (вместе с `receipt_url`).
+	ReceiptPdf *string `json:"receipt_pdf,omitempty"`
+	// Ссылка на фискальный чек на сайте ОФД (1-ОФД). Может присутствовать и без `receipt_pdf` (link_only — наш PDF недоступен).
+	ReceiptUrl *string `json:"receipt_url,omitempty"`
+	// Ссылка на скачивание PDF описи вложения (форма 107, версия отправителя) через наш API. Присутствует в `recipient.sent` и `recipient.delivered`, когда опись сформирована.
+	InventoryPdf *string `json:"inventory_pdf,omitempty"`
 }
 
 type _WebhookEventData WebhookEventData
@@ -260,6 +266,102 @@ func (o *WebhookEventData) SetAmountMinor(v int32) {
 	o.AmountMinor = &v
 }
 
+// GetReceiptPdf returns the ReceiptPdf field value if set, zero value otherwise.
+func (o *WebhookEventData) GetReceiptPdf() string {
+	if o == nil || IsNil(o.ReceiptPdf) {
+		var ret string
+		return ret
+	}
+	return *o.ReceiptPdf
+}
+
+// GetReceiptPdfOk returns a tuple with the ReceiptPdf field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WebhookEventData) GetReceiptPdfOk() (*string, bool) {
+	if o == nil || IsNil(o.ReceiptPdf) {
+		return nil, false
+	}
+	return o.ReceiptPdf, true
+}
+
+// HasReceiptPdf returns a boolean if a field has been set.
+func (o *WebhookEventData) HasReceiptPdf() bool {
+	if o != nil && !IsNil(o.ReceiptPdf) {
+		return true
+	}
+
+	return false
+}
+
+// SetReceiptPdf gets a reference to the given string and assigns it to the ReceiptPdf field.
+func (o *WebhookEventData) SetReceiptPdf(v string) {
+	o.ReceiptPdf = &v
+}
+
+// GetReceiptUrl returns the ReceiptUrl field value if set, zero value otherwise.
+func (o *WebhookEventData) GetReceiptUrl() string {
+	if o == nil || IsNil(o.ReceiptUrl) {
+		var ret string
+		return ret
+	}
+	return *o.ReceiptUrl
+}
+
+// GetReceiptUrlOk returns a tuple with the ReceiptUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WebhookEventData) GetReceiptUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.ReceiptUrl) {
+		return nil, false
+	}
+	return o.ReceiptUrl, true
+}
+
+// HasReceiptUrl returns a boolean if a field has been set.
+func (o *WebhookEventData) HasReceiptUrl() bool {
+	if o != nil && !IsNil(o.ReceiptUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetReceiptUrl gets a reference to the given string and assigns it to the ReceiptUrl field.
+func (o *WebhookEventData) SetReceiptUrl(v string) {
+	o.ReceiptUrl = &v
+}
+
+// GetInventoryPdf returns the InventoryPdf field value if set, zero value otherwise.
+func (o *WebhookEventData) GetInventoryPdf() string {
+	if o == nil || IsNil(o.InventoryPdf) {
+		var ret string
+		return ret
+	}
+	return *o.InventoryPdf
+}
+
+// GetInventoryPdfOk returns a tuple with the InventoryPdf field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WebhookEventData) GetInventoryPdfOk() (*string, bool) {
+	if o == nil || IsNil(o.InventoryPdf) {
+		return nil, false
+	}
+	return o.InventoryPdf, true
+}
+
+// HasInventoryPdf returns a boolean if a field has been set.
+func (o *WebhookEventData) HasInventoryPdf() bool {
+	if o != nil && !IsNil(o.InventoryPdf) {
+		return true
+	}
+
+	return false
+}
+
+// SetInventoryPdf gets a reference to the given string and assigns it to the InventoryPdf field.
+func (o *WebhookEventData) SetInventoryPdf(v string) {
+	o.InventoryPdf = &v
+}
+
 func (o WebhookEventData) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -286,6 +388,15 @@ func (o WebhookEventData) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.AmountMinor) {
 		toSerialize["amount_minor"] = o.AmountMinor
+	}
+	if !IsNil(o.ReceiptPdf) {
+		toSerialize["receipt_pdf"] = o.ReceiptPdf
+	}
+	if !IsNil(o.ReceiptUrl) {
+		toSerialize["receipt_url"] = o.ReceiptUrl
+	}
+	if !IsNil(o.InventoryPdf) {
+		toSerialize["inventory_pdf"] = o.InventoryPdf
 	}
 	return toSerialize, nil
 }

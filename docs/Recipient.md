@@ -12,6 +12,9 @@ Name | Type | Description | Notes
 **TrackingNumber** | Pointer to **string** | Трек-номер Почты России (ШПИ). Появляется после регистрации отправления. | [optional] 
 **PriceMinor** | Pointer to **int64** | Стоимость отправления этому получателю, в копейках. | [optional] 
 **Error** | Pointer to **string** | Причина ошибки (для &#x60;failed&#x60;). | [optional] 
+**ReceiptPdf** | Pointer to **string** | Ссылка на скачивание PDF фискального чека (54-ФЗ) этому получателю через наш API (см. &#x60;GET /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf&#x60;). Присутствует, только когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;). | [optional] 
+**ReceiptUrl** | Pointer to **string** | Ссылка на фискальный чек на сайте ОФД (1-ОФД). Присутствует, когда чек пробит (получатель &#x60;sent&#x60;/&#x60;delivered&#x60;). Может присутствовать и без &#x60;receipt_pdf&#x60; — когда наш PDF недоступен (link_only). | [optional] 
+**InventoryPdf** | Pointer to **string** | Ссылка на скачивание PDF описи вложения (форма 107, версия отправителя) через наш API (см. &#x60;GET /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf&#x60;). Присутствует, когда опись сформирована и отправление передано в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;). | [optional] 
 
 ## Methods
 
@@ -216,6 +219,81 @@ SetError sets Error field to given value.
 `func (o *Recipient) HasError() bool`
 
 HasError returns a boolean if a field has been set.
+
+### GetReceiptPdf
+
+`func (o *Recipient) GetReceiptPdf() string`
+
+GetReceiptPdf returns the ReceiptPdf field if non-nil, zero value otherwise.
+
+### GetReceiptPdfOk
+
+`func (o *Recipient) GetReceiptPdfOk() (*string, bool)`
+
+GetReceiptPdfOk returns a tuple with the ReceiptPdf field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReceiptPdf
+
+`func (o *Recipient) SetReceiptPdf(v string)`
+
+SetReceiptPdf sets ReceiptPdf field to given value.
+
+### HasReceiptPdf
+
+`func (o *Recipient) HasReceiptPdf() bool`
+
+HasReceiptPdf returns a boolean if a field has been set.
+
+### GetReceiptUrl
+
+`func (o *Recipient) GetReceiptUrl() string`
+
+GetReceiptUrl returns the ReceiptUrl field if non-nil, zero value otherwise.
+
+### GetReceiptUrlOk
+
+`func (o *Recipient) GetReceiptUrlOk() (*string, bool)`
+
+GetReceiptUrlOk returns a tuple with the ReceiptUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReceiptUrl
+
+`func (o *Recipient) SetReceiptUrl(v string)`
+
+SetReceiptUrl sets ReceiptUrl field to given value.
+
+### HasReceiptUrl
+
+`func (o *Recipient) HasReceiptUrl() bool`
+
+HasReceiptUrl returns a boolean if a field has been set.
+
+### GetInventoryPdf
+
+`func (o *Recipient) GetInventoryPdf() string`
+
+GetInventoryPdf returns the InventoryPdf field if non-nil, zero value otherwise.
+
+### GetInventoryPdfOk
+
+`func (o *Recipient) GetInventoryPdfOk() (*string, bool)`
+
+GetInventoryPdfOk returns a tuple with the InventoryPdf field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetInventoryPdf
+
+`func (o *Recipient) SetInventoryPdf(v string)`
+
+SetInventoryPdf sets InventoryPdf field to given value.
+
+### HasInventoryPdf
+
+`func (o *Recipient) HasInventoryPdf() bool`
+
+HasInventoryPdf returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

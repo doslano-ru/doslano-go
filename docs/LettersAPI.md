@@ -5,6 +5,8 @@ All URIs are relative to *https://integration.doslano.ru*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateLetter**](LettersAPI.md#CreateLetter) | **Post** /v1/letters | Отправить письмо
+[**DownloadRecipientInventoryPdf**](LettersAPI.md#DownloadRecipientInventoryPdf) | **Get** /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf | PDF описи вложения получателя
+[**DownloadRecipientReceiptPdf**](LettersAPI.md#DownloadRecipientReceiptPdf) | **Get** /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf | PDF фискального чека получателя
 [**GetLetter**](LettersAPI.md#GetLetter) | **Get** /v1/letters/{id} | Статус письма
 [**GetRecipientTracking**](LettersAPI.md#GetRecipientTracking) | **Get** /v1/letters/{id}/recipients/{recipient_id}/tracking | Трек-события получателя
 [**ListLetters**](LettersAPI.md#ListLetters) | **Get** /v1/letters | Список писем
@@ -73,6 +75,152 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: application/json
 - **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DownloadRecipientInventoryPdf
+
+> *os.File DownloadRecipientInventoryPdf(ctx, id, recipientId).Execute()
+
+PDF описи вложения получателя
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/doslano-ru/doslano-go"
+)
+
+func main() {
+	id := "id_example" // string | Идентификатор письма.
+	recipientId := "recipientId_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.LettersAPI.DownloadRecipientInventoryPdf(context.Background(), id, recipientId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `LettersAPI.DownloadRecipientInventoryPdf``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DownloadRecipientInventoryPdf`: *os.File
+	fmt.Fprintf(os.Stdout, "Response from `LettersAPI.DownloadRecipientInventoryPdf`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** | Идентификатор письма. | 
+**recipientId** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDownloadRecipientInventoryPdfRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[***os.File**](*os.File.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/pdf, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DownloadRecipientReceiptPdf
+
+> *os.File DownloadRecipientReceiptPdf(ctx, id, recipientId).Execute()
+
+PDF фискального чека получателя
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/doslano-ru/doslano-go"
+)
+
+func main() {
+	id := "id_example" // string | Идентификатор письма.
+	recipientId := "recipientId_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.LettersAPI.DownloadRecipientReceiptPdf(context.Background(), id, recipientId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `LettersAPI.DownloadRecipientReceiptPdf``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DownloadRecipientReceiptPdf`: *os.File
+	fmt.Fprintf(os.Stdout, "Response from `LettersAPI.DownloadRecipientReceiptPdf`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** | Идентификатор письма. | 
+**recipientId** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDownloadRecipientReceiptPdfRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[***os.File**](*os.File.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/pdf, application/problem+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

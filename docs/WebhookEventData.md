@@ -11,6 +11,9 @@ Name | Type | Description | Notes
 **TrackingNumber** | Pointer to **string** |  | [optional] 
 **Error** | Pointer to **string** |  | [optional] 
 **AmountMinor** | Pointer to **int32** | Фактически списанная стоимость отправления ЭТОМУ получателю, в копейках (доля дисконтированного тотала письма с учётом промокода). Присутствует только в &#x60;recipient.sent&#x60; — отправление реально ушло и оплачено. В &#x60;recipient.failed&#x60; отсутствует: при провале сумма возвращается на баланс. | [optional] 
+**ReceiptPdf** | Pointer to **string** | Ссылка на скачивание PDF фискального чека (54-ФЗ) через наш API. Колбэк &#x60;recipient.sent&#x60; уходит ПОСЛЕ готовности чека, поэтому поле в нём присутствует (вместе с &#x60;receipt_url&#x60;). | [optional] 
+**ReceiptUrl** | Pointer to **string** | Ссылка на фискальный чек на сайте ОФД (1-ОФД). Может присутствовать и без &#x60;receipt_pdf&#x60; (link_only — наш PDF недоступен). | [optional] 
+**InventoryPdf** | Pointer to **string** | Ссылка на скачивание PDF описи вложения (форма 107, версия отправителя) через наш API. Присутствует в &#x60;recipient.sent&#x60; и &#x60;recipient.delivered&#x60;, когда опись сформирована. | [optional] 
 
 ## Methods
 
@@ -195,6 +198,81 @@ SetAmountMinor sets AmountMinor field to given value.
 `func (o *WebhookEventData) HasAmountMinor() bool`
 
 HasAmountMinor returns a boolean if a field has been set.
+
+### GetReceiptPdf
+
+`func (o *WebhookEventData) GetReceiptPdf() string`
+
+GetReceiptPdf returns the ReceiptPdf field if non-nil, zero value otherwise.
+
+### GetReceiptPdfOk
+
+`func (o *WebhookEventData) GetReceiptPdfOk() (*string, bool)`
+
+GetReceiptPdfOk returns a tuple with the ReceiptPdf field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReceiptPdf
+
+`func (o *WebhookEventData) SetReceiptPdf(v string)`
+
+SetReceiptPdf sets ReceiptPdf field to given value.
+
+### HasReceiptPdf
+
+`func (o *WebhookEventData) HasReceiptPdf() bool`
+
+HasReceiptPdf returns a boolean if a field has been set.
+
+### GetReceiptUrl
+
+`func (o *WebhookEventData) GetReceiptUrl() string`
+
+GetReceiptUrl returns the ReceiptUrl field if non-nil, zero value otherwise.
+
+### GetReceiptUrlOk
+
+`func (o *WebhookEventData) GetReceiptUrlOk() (*string, bool)`
+
+GetReceiptUrlOk returns a tuple with the ReceiptUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReceiptUrl
+
+`func (o *WebhookEventData) SetReceiptUrl(v string)`
+
+SetReceiptUrl sets ReceiptUrl field to given value.
+
+### HasReceiptUrl
+
+`func (o *WebhookEventData) HasReceiptUrl() bool`
+
+HasReceiptUrl returns a boolean if a field has been set.
+
+### GetInventoryPdf
+
+`func (o *WebhookEventData) GetInventoryPdf() string`
+
+GetInventoryPdf returns the InventoryPdf field if non-nil, zero value otherwise.
+
+### GetInventoryPdfOk
+
+`func (o *WebhookEventData) GetInventoryPdfOk() (*string, bool)`
+
+GetInventoryPdfOk returns a tuple with the InventoryPdf field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetInventoryPdf
+
+`func (o *WebhookEventData) SetInventoryPdf(v string)`
+
+SetInventoryPdf sets InventoryPdf field to given value.
+
+### HasInventoryPdf
+
+`func (o *WebhookEventData) HasInventoryPdf() bool`
+
+HasInventoryPdf returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

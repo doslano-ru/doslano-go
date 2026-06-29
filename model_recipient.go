@@ -33,6 +33,12 @@ type Recipient struct {
 	PriceMinor *int64 `json:"price_minor,omitempty"`
 	// Причина ошибки (для `failed`).
 	Error *string `json:"error,omitempty"`
+	// Ссылка на скачивание PDF фискального чека (54-ФЗ) этому получателю через наш API (см. `GET /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf`). Присутствует, только когда чек пробит и его PDF сохранён у нас (получатель в статусе `sent`/`delivered`).
+	ReceiptPdf *string `json:"receipt_pdf,omitempty"`
+	// Ссылка на фискальный чек на сайте ОФД (1-ОФД). Присутствует, когда чек пробит (получатель `sent`/`delivered`). Может присутствовать и без `receipt_pdf` — когда наш PDF недоступен (link_only).
+	ReceiptUrl *string `json:"receipt_url,omitempty"`
+	// Ссылка на скачивание PDF описи вложения (форма 107, версия отправителя) через наш API (см. `GET /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf`). Присутствует, когда опись сформирована и отправление передано в Почту (получатель в статусе `sent`/`delivered`).
+	InventoryPdf *string `json:"inventory_pdf,omitempty"`
 }
 
 type _Recipient Recipient
@@ -289,6 +295,102 @@ func (o *Recipient) SetError(v string) {
 	o.Error = &v
 }
 
+// GetReceiptPdf returns the ReceiptPdf field value if set, zero value otherwise.
+func (o *Recipient) GetReceiptPdf() string {
+	if o == nil || IsNil(o.ReceiptPdf) {
+		var ret string
+		return ret
+	}
+	return *o.ReceiptPdf
+}
+
+// GetReceiptPdfOk returns a tuple with the ReceiptPdf field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Recipient) GetReceiptPdfOk() (*string, bool) {
+	if o == nil || IsNil(o.ReceiptPdf) {
+		return nil, false
+	}
+	return o.ReceiptPdf, true
+}
+
+// HasReceiptPdf returns a boolean if a field has been set.
+func (o *Recipient) HasReceiptPdf() bool {
+	if o != nil && !IsNil(o.ReceiptPdf) {
+		return true
+	}
+
+	return false
+}
+
+// SetReceiptPdf gets a reference to the given string and assigns it to the ReceiptPdf field.
+func (o *Recipient) SetReceiptPdf(v string) {
+	o.ReceiptPdf = &v
+}
+
+// GetReceiptUrl returns the ReceiptUrl field value if set, zero value otherwise.
+func (o *Recipient) GetReceiptUrl() string {
+	if o == nil || IsNil(o.ReceiptUrl) {
+		var ret string
+		return ret
+	}
+	return *o.ReceiptUrl
+}
+
+// GetReceiptUrlOk returns a tuple with the ReceiptUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Recipient) GetReceiptUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.ReceiptUrl) {
+		return nil, false
+	}
+	return o.ReceiptUrl, true
+}
+
+// HasReceiptUrl returns a boolean if a field has been set.
+func (o *Recipient) HasReceiptUrl() bool {
+	if o != nil && !IsNil(o.ReceiptUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetReceiptUrl gets a reference to the given string and assigns it to the ReceiptUrl field.
+func (o *Recipient) SetReceiptUrl(v string) {
+	o.ReceiptUrl = &v
+}
+
+// GetInventoryPdf returns the InventoryPdf field value if set, zero value otherwise.
+func (o *Recipient) GetInventoryPdf() string {
+	if o == nil || IsNil(o.InventoryPdf) {
+		var ret string
+		return ret
+	}
+	return *o.InventoryPdf
+}
+
+// GetInventoryPdfOk returns a tuple with the InventoryPdf field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Recipient) GetInventoryPdfOk() (*string, bool) {
+	if o == nil || IsNil(o.InventoryPdf) {
+		return nil, false
+	}
+	return o.InventoryPdf, true
+}
+
+// HasInventoryPdf returns a boolean if a field has been set.
+func (o *Recipient) HasInventoryPdf() bool {
+	if o != nil && !IsNil(o.InventoryPdf) {
+		return true
+	}
+
+	return false
+}
+
+// SetInventoryPdf gets a reference to the given string and assigns it to the InventoryPdf field.
+func (o *Recipient) SetInventoryPdf(v string) {
+	o.InventoryPdf = &v
+}
+
 func (o Recipient) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -316,6 +418,15 @@ func (o Recipient) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Error) {
 		toSerialize["error"] = o.Error
+	}
+	if !IsNil(o.ReceiptPdf) {
+		toSerialize["receipt_pdf"] = o.ReceiptPdf
+	}
+	if !IsNil(o.ReceiptUrl) {
+		toSerialize["receipt_url"] = o.ReceiptUrl
+	}
+	if !IsNil(o.InventoryPdf) {
+		toSerialize["inventory_pdf"] = o.InventoryPdf
 	}
 	return toSerialize, nil
 }

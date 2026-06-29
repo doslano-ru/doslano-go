@@ -34,6 +34,36 @@ func Test_doslano_LettersAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test LettersAPIService DownloadRecipientInventoryPdf", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var id string
+		var recipientId string
+
+		resp, httpRes, err := apiClient.LettersAPI.DownloadRecipientInventoryPdf(context.Background(), id, recipientId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test LettersAPIService DownloadRecipientReceiptPdf", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var id string
+		var recipientId string
+
+		resp, httpRes, err := apiClient.LettersAPI.DownloadRecipientReceiptPdf(context.Background(), id, recipientId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test LettersAPIService GetLetter", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
