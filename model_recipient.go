@@ -33,6 +33,8 @@ type Recipient struct {
 	PriceMinor *int64 `json:"price_minor,omitempty"`
 	// Причина ошибки (для `failed`).
 	Error *string `json:"error,omitempty"`
+	// Письмо отправляется/отправлено на адрес, усечённый до номера дома (сработало согласие `allow_address_truncation`). Поле `address` содержит фактический адрес отправки. Отсутствие поля эквивалентно false.
+	AddressTruncationApplied *bool `json:"address_truncation_applied,omitempty"`
 	// Ссылка на скачивание PDF фискального чека (54-ФЗ) этому получателю через наш API (см. `GET /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf`). Присутствует, только когда чек пробит и его PDF сохранён у нас (получатель в статусе `sent`/`delivered`).
 	ReceiptPdf *string `json:"receipt_pdf,omitempty"`
 	// Ссылка на фискальный чек на сайте ОФД (1-ОФД). Присутствует, когда чек пробит (получатель `sent`/`delivered`). Может присутствовать и без `receipt_pdf` — когда наш PDF недоступен (link_only).
@@ -295,6 +297,38 @@ func (o *Recipient) SetError(v string) {
 	o.Error = &v
 }
 
+// GetAddressTruncationApplied returns the AddressTruncationApplied field value if set, zero value otherwise.
+func (o *Recipient) GetAddressTruncationApplied() bool {
+	if o == nil || IsNil(o.AddressTruncationApplied) {
+		var ret bool
+		return ret
+	}
+	return *o.AddressTruncationApplied
+}
+
+// GetAddressTruncationAppliedOk returns a tuple with the AddressTruncationApplied field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Recipient) GetAddressTruncationAppliedOk() (*bool, bool) {
+	if o == nil || IsNil(o.AddressTruncationApplied) {
+		return nil, false
+	}
+	return o.AddressTruncationApplied, true
+}
+
+// HasAddressTruncationApplied returns a boolean if a field has been set.
+func (o *Recipient) HasAddressTruncationApplied() bool {
+	if o != nil && !IsNil(o.AddressTruncationApplied) {
+		return true
+	}
+
+	return false
+}
+
+// SetAddressTruncationApplied gets a reference to the given bool and assigns it to the AddressTruncationApplied field.
+func (o *Recipient) SetAddressTruncationApplied(v bool) {
+	o.AddressTruncationApplied = &v
+}
+
 // GetReceiptPdf returns the ReceiptPdf field value if set, zero value otherwise.
 func (o *Recipient) GetReceiptPdf() string {
 	if o == nil || IsNil(o.ReceiptPdf) {
@@ -418,6 +452,9 @@ func (o Recipient) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Error) {
 		toSerialize["error"] = o.Error
+	}
+	if !IsNil(o.AddressTruncationApplied) {
+		toSerialize["address_truncation_applied"] = o.AddressTruncationApplied
 	}
 	if !IsNil(o.ReceiptPdf) {
 		toSerialize["receipt_pdf"] = o.ReceiptPdf

@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **TrackingNumber** | Pointer to **string** | Трек-номер Почты России (ШПИ). Появляется после регистрации отправления. | [optional] 
 **PriceMinor** | Pointer to **int64** | Стоимость отправления этому получателю, в копейках. | [optional] 
 **Error** | Pointer to **string** | Причина ошибки (для &#x60;failed&#x60;). | [optional] 
+**AddressTruncationApplied** | Pointer to **bool** | Письмо отправляется/отправлено на адрес, усечённый до номера дома (сработало согласие &#x60;allow_address_truncation&#x60;). Поле &#x60;address&#x60; содержит фактический адрес отправки. Отсутствие поля эквивалентно false. | [optional] 
 **ReceiptPdf** | Pointer to **string** | Ссылка на скачивание PDF фискального чека (54-ФЗ) этому получателю через наш API (см. &#x60;GET /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf&#x60;). Присутствует, только когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;). | [optional] 
 **ReceiptUrl** | Pointer to **string** | Ссылка на фискальный чек на сайте ОФД (1-ОФД). Присутствует, когда чек пробит (получатель &#x60;sent&#x60;/&#x60;delivered&#x60;). Может присутствовать и без &#x60;receipt_pdf&#x60; — когда наш PDF недоступен (link_only). | [optional] 
 **InventoryPdf** | Pointer to **string** | Ссылка на скачивание PDF описи вложения (форма 107, версия отправителя) через наш API (см. &#x60;GET /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf&#x60;). Присутствует, когда опись сформирована и отправление передано в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;). | [optional] 
@@ -219,6 +220,31 @@ SetError sets Error field to given value.
 `func (o *Recipient) HasError() bool`
 
 HasError returns a boolean if a field has been set.
+
+### GetAddressTruncationApplied
+
+`func (o *Recipient) GetAddressTruncationApplied() bool`
+
+GetAddressTruncationApplied returns the AddressTruncationApplied field if non-nil, zero value otherwise.
+
+### GetAddressTruncationAppliedOk
+
+`func (o *Recipient) GetAddressTruncationAppliedOk() (*bool, bool)`
+
+GetAddressTruncationAppliedOk returns a tuple with the AddressTruncationApplied field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAddressTruncationApplied
+
+`func (o *Recipient) SetAddressTruncationApplied(v bool)`
+
+SetAddressTruncationApplied sets AddressTruncationApplied field to given value.
+
+### HasAddressTruncationApplied
+
+`func (o *Recipient) HasAddressTruncationApplied() bool`
+
+HasAddressTruncationApplied returns a boolean if a field has been set.
 
 ### GetReceiptPdf
 

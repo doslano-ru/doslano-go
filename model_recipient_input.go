@@ -32,6 +32,8 @@ type RecipientInput struct {
 	Email *string `json:"email,omitempty"`
 	// Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type=organization с заданным inn: адрес и наименование берутся из реестра (DaData findById/party, головная организация), address можно не передавать. Если резолв не удался и address не передан — 422 recipient_address_unresolved; флаг без inn или не для organization — 422 recipient_resolve_requires_inn. Если передан и address — он fallback при неудаче резолва.
 	ResolveAddressByInn *bool `json:"resolve_address_by_inn,omitempty"`
+	// Согласие на усечение адреса до номера дома, если полный адрес не проходит в Почте России (ЕПС валидирует адреса по ГАР, где помещение/офис/комната часто не зарегистрированы). Усечённая форма готовится автоматически (только когда дом распознан ФИАС). Триггеры: провал валидации адреса Почтой — проверка не блокирует письмо, пока есть варианты (административная форма → муниципальная → усечённая до дома), — и ошибка сохранения отправления SHIPMENT_ERROR — варианты перебираются сразу, без повторных попыток отправки. (Ошибка регистрации EPS_61_INVALID_ADDRESS обрабатывается независимо существующим механизмом муниципального fallback-адреса, без усечения.) Письмо, ушедшее на усечённый адрес, помечается `address_truncation_applied: true` у получателя. Если не помог ни один вариант — стандартная ошибка (422 при создании либо `failed` + возврат средств).
+	AllowAddressTruncation *bool `json:"allow_address_truncation,omitempty"`
 }
 
 type _RecipientInput RecipientInput
@@ -45,6 +47,8 @@ func NewRecipientInput(name string) *RecipientInput {
 	this.Name = name
 	var resolveAddressByInn bool = false
 	this.ResolveAddressByInn = &resolveAddressByInn
+	var allowAddressTruncation bool = false
+	this.AllowAddressTruncation = &allowAddressTruncation
 	return &this
 }
 
@@ -55,6 +59,8 @@ func NewRecipientInputWithDefaults() *RecipientInput {
 	this := RecipientInput{}
 	var resolveAddressByInn bool = false
 	this.ResolveAddressByInn = &resolveAddressByInn
+	var allowAddressTruncation bool = false
+	this.AllowAddressTruncation = &allowAddressTruncation
 	return &this
 }
 
@@ -242,6 +248,38 @@ func (o *RecipientInput) SetResolveAddressByInn(v bool) {
 	o.ResolveAddressByInn = &v
 }
 
+// GetAllowAddressTruncation returns the AllowAddressTruncation field value if set, zero value otherwise.
+func (o *RecipientInput) GetAllowAddressTruncation() bool {
+	if o == nil || IsNil(o.AllowAddressTruncation) {
+		var ret bool
+		return ret
+	}
+	return *o.AllowAddressTruncation
+}
+
+// GetAllowAddressTruncationOk returns a tuple with the AllowAddressTruncation field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RecipientInput) GetAllowAddressTruncationOk() (*bool, bool) {
+	if o == nil || IsNil(o.AllowAddressTruncation) {
+		return nil, false
+	}
+	return o.AllowAddressTruncation, true
+}
+
+// HasAllowAddressTruncation returns a boolean if a field has been set.
+func (o *RecipientInput) HasAllowAddressTruncation() bool {
+	if o != nil && !IsNil(o.AllowAddressTruncation) {
+		return true
+	}
+
+	return false
+}
+
+// SetAllowAddressTruncation gets a reference to the given bool and assigns it to the AllowAddressTruncation field.
+func (o *RecipientInput) SetAllowAddressTruncation(v bool) {
+	o.AllowAddressTruncation = &v
+}
+
 func (o RecipientInput) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -267,6 +305,9 @@ func (o RecipientInput) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.ResolveAddressByInn) {
 		toSerialize["resolve_address_by_inn"] = o.ResolveAddressByInn
+	}
+	if !IsNil(o.AllowAddressTruncation) {
+		toSerialize["allow_address_truncation"] = o.AllowAddressTruncation
 	}
 	return toSerialize, nil
 }
