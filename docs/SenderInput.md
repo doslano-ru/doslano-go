@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Address** | Pointer to **string** | Адрес отправителя (строкой; нормализуется). Не указан — из профиля ЛК. | [optional] 
 **Email** | Pointer to **string** | Email отправителя (плательщика) для кассового чека. Не указан — из профиля ЛК. | [optional] 
 **PartyType** | Pointer to [**PartyType**](PartyType.md) |  | [optional] 
-**Inn** | Pointer to **string** | ИНН (для юр. лиц/ИП). Не указан — из профиля ЛК. | [optional] 
+**Inn** | Pointer to **string** | ИНН (необязателен): 10 цифр — юрлицо, 12 — ИП/самозанятый. Не указан — из профиля ЛК. | [optional] 
 
 ## Methods
 

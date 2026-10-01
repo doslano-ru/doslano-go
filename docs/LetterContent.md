@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **MainFile** | [**FileSource**](FileSource.md) |  | 
-**Attachments** | Pointer to [**[]FileSource**](FileSource.md) |  | [optional] 
+**Attachments** | Pointer to [**[]FileSource**](FileSource.md) | Приложения к основному документу, до 49 (как в личном кабинете).  | [optional] 
 
 ## Methods
 
